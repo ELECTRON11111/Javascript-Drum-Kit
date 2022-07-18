@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS Drum Kit</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+  <div class="keys">
+    <div data-key="65" class="key">
+      <kbd>A</kbd>
+      <span class="sound">clap</span>
+    </div>
+    <div data-key="83" class="key">
+      <kbd>S</kbd>
+      <span class="sound">hihat</span>
+    </div>
+    <div data-key="68" class="key">
+      <kbd>D</kbd>
+      <span class="sound">kick</span>
+    </div>
+    <div data-key="70" class="key">
+      <kbd>F</kbd>
+      <span class="sound">openhat</span>
+    </div>
+    <div data-key="71" class="key">
+      <kbd>G</kbd>
+      <span class="sound">boom</span>
+    </div>
+    <div data-key="72" class="key">
+      <kbd>H</kbd>
+      <span class="sound">ride</span>
+    </div>
+    <div data-key="74" class="key">
+      <kbd>J</kbd>
+      <span class="sound">snare</span>
+    </div>
+    <div data-key="75" class="key">
+      <kbd>K</kbd>
+      <span class="sound">tom</span>
+    </div>
+    <div data-key="76" class="key">
+      <kbd>L</kbd>
+      <span class="sound">tink</span>
+    </div>
+  </div>
+
+  <audio data-key="65" class="clap" src="sounds/clap.wav"></audio>
+  <audio data-key="83" class="hihat" src="sounds/hihat.wav"></audio>
+  <audio data-key="68" class="kick" src="sounds/kick.wav"></audio>
+  <audio data-key="70" class="openhat" src="sounds/openhat.wav"></audio>
+  <audio data-key="71" class="boom" src="sounds/boom.wav"></audio>
+  <audio data-key="72" class="ride" src="sounds/ride.wav"></audio>
+  <audio data-key="74" class="snare" src="sounds/snare.wav"></audio>
+  <audio data-key="75" class="tom" src="sounds/tom.wav"></audio>
+  <audio data-key="76" class="tink" src="sounds/tink.wav"></audio>
+
+<script>
+  /*
+    ================================================================================================
+    This code was written By Electron(Omoniyi Opemipo Daniel).
+    Copyright @ 2022.
+    ________________________________________________________________________________________________
+  */
+
+  // Global Variables
+  let keys =  Array.from(document.querySelectorAll('.key'));
+  let sounds = Array.from(document.getElementsByTagName('audio'));
+
+  document.addEventListener('keypress', (e) => {
+    e.preventDefault();
+    // console.log(e.key, e.code);
+    keys.forEach((key) => {
+      // console.log(key.firstElementChild.textContent.toLowerCase());
+      if (key.children[0].textContent.toLowerCase() == e.key){
+        // This className provides the necessary animations when the key is pressed
+        key.classList = 'key playing';
+        // console.log(key);
+        // Get the text in the span element
+        let keySoundName = key.children[1].textContent.toLocaleLowerCase(); 
+        // console.log(keySoundName);
+        function playS(){
+          sounds.forEach((sound) => {
+            // console.log(sound.src);
+            if(sound.className == `${keySoundName}`){
+              // Since different sounds have different lengths, we do this to reduce the length of the sound
+              sound.currentTime = 0;
+              // Play audio
+              sound.play();
+              // console.log('Ishould play');
+            }
+          });
+        };
+        playS();
+      }
+      // The keyup event represents when key.press = false (Pseudo-code)
+      window.addEventListener('keyup', removeTransition);
+    });
+
+  },false);
+
+  // This removes the Scaling transition by changing the className.
+  function removeTransition(){
+    keys.forEach(key => key.classList = 'key');
+  };
+</script>
+</body>
+</html>
